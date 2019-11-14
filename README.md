@@ -4,6 +4,42 @@ SQL queries for DB2
 
 These are a few SQL queries/procedures that I've built and used for manipulating a DB2 database.
 
+select cast(a.acctact as Dec(16,0)) from actmst A
+where a.accact not in (select acctno from lnmast) 	
+
+same as
+
+select cast(a.accact as Dec(16,0)) from actmst A 
+left outer join lnmast B on a.accact = b.acctno
+
+
+select cast(a.accact as Dec(16,0)) as credit,              
+cast(a.acdact as Dec(16,0)) as debit, a.accaty, a.accbnk   
+from jhajgrant1/actmsttst A                                
+ where a.accact not in (select acctno from dat702/lnmast) 
+ 
+select actact as "Master Acc #",                        
+cast(accact as Dec(16,0)) as "Credit Acc #",            
+accbnk as "Credit Bank #", accaty as "Credit Acc Type", 
+acdact as "Debit Acc #", acdbnk as "Debit Bank #",      
+acdaty as "Debit Acc Type", actamt as "Transfer Amt"
+from dat702/actmst where accact not in                  
+(select acctno from dat702/lnmast) and accaty = 'L'
+
+
+update dat802.cdmast a set a.branch = (select b.branch from ddmast
+ B where (B.acctno) = (a.acctno) and (b.actype) = (a.actype) 
+ where (a.acctno) in (select acctno from dat801/cdmast) 
+ 
+ 
+ Select count(*) from eddaftm a where exists            
+(select 1 from lnmast b where a.cracct = b.acctno and  
+b.asslc > b.paidlc)
+
+//////////////////////
+//
+//////////////////////
+
  P pull_splitF     b                                                            
  D wrkrowid        s                   like(xl2_lrecid) inz(*zeros)             
  D wrkdate         s                   like(xl2_lpymtdt) inz(*blanks)           
@@ -49,7 +85,7 @@ These are a few SQL queries/procedures that I've built and used for manipulating
    Exec SQL Declare C1 Cursor FOR S1;                                                  
    Exec SQL open C1;                                                                   
    Dow EndRows = *off;                                                                 
-     Exec SQL fetch next from C1 into :elarhstxDS;                                     
+     Exec SQL fetch next from C1 into :elarhstxDS;                                    
                                                                                        
      EndRows = sqlstate = NoMoreRows;                                                  
                                                                                        
@@ -102,41 +138,5 @@ These are a few SQL queries/procedures that I've built and used for manipulating
      ltcpmt = sltcpmt;                                              
      wrkpmt = sprnpmt + sintpmt + sescpmt + sltcpmt;                
    endif;          
-   
-   
-   
-////////////////////////////////////////////////////////////
-// 
-///////////////////////////////////////////////////////////
-select cast(a.acctact as Dec(16,0)) from actmst A
-where a.accact not in (select acctno from lnmast) 	
 
-same as
-
-select cast(a.accact as Dec(16,0)) from actmst A 
-left outer join lnmast B on a.accact = b.acctno
-
-
-select cast(a.accact as Dec(16,0)) as credit,              
-cast(a.acdact as Dec(16,0)) as debit, a.accaty, a.accbnk   
-from jhajgrant1/actmsttst A                                
- where a.accact not in (select acctno from dat702/lnmast) 
- 
-select actact as "Master Acc #",                        
-cast(accact as Dec(16,0)) as "Credit Acc #",            
-accbnk as "Credit Bank #", accaty as "Credit Acc Type", 
-acdact as "Debit Acc #", acdbnk as "Debit Bank #",      
-acdaty as "Debit Acc Type", actamt as "Transfer Amt"
-from dat702/actmst where accact not in                  
-(select acctno from dat702/lnmast) and accaty = 'L'
-
-
-update dat802.cdmast a set a.branch = (select b.branch from ddmast
- B where (B.acctno) = (a.acctno) and (b.actype) = (a.actype) 
- where (a.acctno) in (select acctno from dat801/cdmast) 
- 
- 
- Select count(*) from eddaftm a where exists            
-(select 1 from lnmast b where a.cracct = b.acctno and  
-b.asslc > b.paidlc)
    
