@@ -36,7 +36,7 @@ These are a few SQL queries/procedures that I've built and used for manipulating
    // wrkLen - 2 for the first 2 numbers that we'll be keeping
    for x to wrkLen - 2;                                                               
      lowerVal += '0';                                                                 
-     upperVAl += '0';                                                                 
+     upperVal += '0';                                                                 
    endfor;   
    
    strSql = 'Select * from ELARHSTX where ' +                                          
