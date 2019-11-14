@@ -134,4 +134,9 @@ from dat702/actmst where accact not in
 update dat802.cdmast a set a.branch = (select b.branch from ddmast
  B where (B.acctno) = (a.acctno) and (b.actype) = (a.actype) 
  where (a.acctno) in (select acctno from dat801/cdmast) 
+ 
+ 
+ Select count(*) from eddaftm a where exists            
+(select 1 from lnmast b where a.cracct = b.acctno and  
+b.asslc > b.paidlc)
    
