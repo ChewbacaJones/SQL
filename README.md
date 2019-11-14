@@ -117,5 +117,21 @@ select cast(a.accact as Dec(16,0)) from actmst A
 left outer join lnmast B on a.accact = b.acctno
 
 
+select cast(a.accact as Dec(16,0)) as credit,              
+cast(a.acdact as Dec(16,0)) as debit, a.accaty, a.accbnk   
+from jhajgrant1/actmsttst A                                
+ where a.accact not in (select acctno from dat702/lnmast) 
+ 
+select actact as "Master Acc #",                        
+cast(accact as Dec(16,0)) as "Credit Acc #",            
+accbnk as "Credit Bank #", accaty as "Credit Acc Type", 
+acdact as "Debit Acc #", acdbnk as "Debit Bank #",      
+acdaty as "Debit Acc Type", actamt as "Transfer Amt"
+from dat702/actmst where accact not in                  
+(select acctno from dat702/lnmast) and accaty = 'L'
 
+
+update dat802.cdmast a set a.branch = (select b.branch from ddmast
+ B where (B.acctno) = (a.acctno) and (b.actype) = (a.actype) 
+ where (a.acctno) in (select acctno from dat801/cdmast) 
    
