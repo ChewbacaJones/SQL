@@ -101,5 +101,21 @@ These are a few SQL queries/procedures that I've built and used for manipulating
      escpmt = sescpmt;                                              
      ltcpmt = sltcpmt;                                              
      wrkpmt = sprnpmt + sintpmt + sescpmt + sltcpmt;                
-   endif;                                                           
+   endif;          
+   
+   
+   
+////////////////////////////////////////////////////////////
+// 
+///////////////////////////////////////////////////////////
+select cast(a.acctact as Dec(16,0)) from actmst A
+where a.accact not in (select acctno from lnmast) 	
+
+same as
+
+select cast(a.accact as Dec(16,0)) from actmst A 
+left outer join lnmast B on a.accact = b.acctno
+
+
+
    
